@@ -7,6 +7,12 @@ def compile_clips():
 
     clips = []
 
+    for time in find_death_times():
+        clips.append( clip.subclip(time-5,time+10) )
+
+    final_clip = concatenate_videoclips(clips)
+    final_clip.write_videofile("/output/test.mp4")
+
 
 def find_death_times(clip):
     time_stamp = 0
@@ -14,10 +20,9 @@ def find_death_times(clip):
 
     while time_stamp < clip.duration:
         frame = clip.get_frame(time_stamp)
-        print "time: " + str(time_stamp)
 
         if is_you_died(frame):
-            print "death at: " + str(time_stamp)
+            #print "death at: " + str(time_stamp)
             death_times.append(time_stamp)
 
         time_stamp += 1.0
@@ -36,8 +41,6 @@ def is_you_died(frame):
         if check_bool:
             num_true += 1
 
-    print num_true
-
     if num_true > 0:
         return True
     else:
@@ -46,4 +49,4 @@ def is_you_died(frame):
 def is_red(color):
     return color[0] >= 60 and color[1] <= 10 and color[2] <= 20
 
-find_death_times()
+compile_clips()
