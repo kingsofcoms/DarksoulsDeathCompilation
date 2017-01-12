@@ -1,4 +1,5 @@
 from moviepy.editor import *
+import progressbar as pb
 
 def compile_clips():
     # Open video file
@@ -17,6 +18,8 @@ def compile_clips():
 def find_death_times(clip):
     time_stamp = 0
     death_times = []
+    print "Finding death times:"
+    progress = pb.ProgressBar(maxval = clip.duration).start()
 
     while time_stamp < clip.duration:
         frame = clip.get_frame(time_stamp)
@@ -25,7 +28,8 @@ def find_death_times(clip):
             #print "death at: " + str(time_stamp)
             death_times.append(time_stamp)
 
-        time_stamp += 1.0
+        time_stamp += 1
+        progress.update(time_stamp)
     return death_times
 
 locations_to_check = [(436, 372),(476, 370),(558, 361),(657, 360),
